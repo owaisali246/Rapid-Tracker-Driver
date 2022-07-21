@@ -35,7 +35,6 @@ const App = () => {
             }
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            //To Check, If Permission is granted
             // console.log('permission given')
             getOneTimeLocation();
             // subscribeLocationLocation();
@@ -50,17 +49,14 @@ const App = () => {
       }
     };
     requestLocationPermission();
-    // return () => {
-    //   Geolocation.clearWatch(watchID);
-    // };
   }, []);
 
   const getOneTimeLocation = () => {
     Geolocation.getCurrentPosition(
       (position) => {
-        console.log(position.coords.latitude, position.coords.longitude);
-        setCurrentLongitude(position.coords.longitude);
-        setCurrentLatitude(position.coords.latitude);
+        console.log(position.coords.latitude.toFixed(5), position.coords.longitude.toFixed(5));
+        setCurrentLongitude(position.coords.longitude.toFixed(5));
+        setCurrentLatitude(position.coords.latitude.toFixed(5));
       },
       (error) => {
         setLocationStatus(error.message);
@@ -87,7 +83,7 @@ const App = () => {
 
 
   function share_location() {
-    timer = setInterval(getOneTimeLocation, 1000);
+    timer = setInterval(getOneTimeLocation, 8000);
     setLocationStatus("Sharing Location...")
   }
   function stop_sharing_loc() {
@@ -102,7 +98,8 @@ const App = () => {
           <Image
             source={{
               uri:
-                'https://raw.githubusercontent.com/AboutReact/sampleresource/master/location.png',
+                // 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/location.png',
+                'https://github.com/owaisali246/Metro-Bus-Tracking-app/blob/main/src/Assets/newMarker.png?raw=true'
             }}
             style={{ width: 100, height: 100 }}
           />
@@ -113,6 +110,7 @@ const App = () => {
               alignItems: 'center',
               color: 'black',
               marginTop: 16,
+              fontSize: 20
             }}>
             Longitude: {currentLongitude}
           </Text>
@@ -122,14 +120,15 @@ const App = () => {
               alignItems: 'center',
               color: 'black',
               marginTop: 16,
+              fontSize: 20
             }}>
             Latitude: {currentLatitude}
           </Text>
-          <View style={{ marginTop: 20 }}>
-            <Button title="Start Location Sharing" onPress={share_location} />
+          <View style={{ marginTop: 30 }}>
+            <Button color='#03fe86' title="Start Location Sharing" onPress={share_location} />
           </View>
-          <View style={{ marginTop: 20 }}>
-            <Button title="Stop Location Sharing" onPress={stop_sharing_loc} />
+          <View style={{ marginTop: 30 }}>
+            <Button color={'red'} title="Stop Location Sharing" onPress={stop_sharing_loc} />
           </View>
         </View>
       </View>
@@ -146,8 +145,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   boldText: {
-    fontSize: 25,
-    color: 'red',
+    fontSize: 26,
+    color: '#03fe86',
     marginVertical: 16,
   },
 });
