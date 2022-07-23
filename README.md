@@ -1,2 +1,2 @@
 # Rapid-Tracker-Driver
-This is a simple react native app which fetches user's location
+This is a simple react native app which fetches the user's location.
