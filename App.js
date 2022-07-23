@@ -22,7 +22,7 @@ const App = () => {
     setLocationStatus('You are Here');
     const requestLocationPermission = async () => {
       if (Platform.OS === 'ios') {
-        getOneTimeLocation();
+        getLocation();
         // subscribeLocationLocation();
       }
       else {
@@ -36,7 +36,7 @@ const App = () => {
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             // console.log('permission given')
-            getOneTimeLocation();
+            getLocation();
             // subscribeLocationLocation();
           } else {
             // console.log('permission denied')
@@ -51,12 +51,35 @@ const App = () => {
     requestLocationPermission();
   }, []);
 
-  const getOneTimeLocation = () => {
+  function send_coords(latitude, longitude) {
+    var api = "http://192.168.18.16/php_program/send_coords.php"
+    var headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application.json'
+    };
+
+    var data = {
+      latitude: latitude,
+      longitude: longitude
+    };
+
+    fetch(api, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(data)
+    }).catch((error) => {
+      alert('Error' + error);
+    })
+
+  }
+
+  const getLocation = () => {
     Geolocation.getCurrentPosition(
       (position) => {
         console.log(position.coords.latitude.toFixed(5), position.coords.longitude.toFixed(5));
         setCurrentLongitude(position.coords.longitude.toFixed(5));
         setCurrentLatitude(position.coords.latitude.toFixed(5));
+        send_coords(currentLatitude, currentLongitude);
       },
       (error) => {
         setLocationStatus(error.message);
@@ -65,30 +88,15 @@ const App = () => {
     );
   };
 
-  // const subscribeLocationLocation = () => {
-  //   watchID = Geolocation.watchPosition(
-  //     (position) => {
-  //       setLocationStatus('You are Here');
-  //       console.log(position.coords.latitude, position.coords.longitude);
-  //       setCurrentLongitude(position.coords.longitude);
-  //       setCurrentLatitude(position.coords.latitude);
-  //     },
-  //     (error) => {
-  //       setLocationStatus(error.message);
-  //     },
-  //     { enableHighAccuracy: true, maximumAge: 1000, interval: 3000 }
-  //   );
-  // };
-
-
 
   function share_location() {
-    timer = setInterval(getOneTimeLocation, 8000);
+    timer = setInterval(getLocation, 6000);
     setLocationStatus("Sharing Location...")
   }
   function stop_sharing_loc() {
     clearInterval(timer);
-    setLocationStatus("Location Sharing Stopped!")
+    setLocationStatus("Location Sharing Stopped!");
+    send_coords(0, 0);
   }
 
   return (
