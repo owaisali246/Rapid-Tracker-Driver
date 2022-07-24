@@ -44,7 +44,7 @@ const App = () => {
           }
         } catch (err) {
           // console.log('warning error')
-          console.warn(err);
+          alert('Error' + err)
         }
       }
     };
@@ -52,7 +52,8 @@ const App = () => {
   }, []);
 
   function send_coords(latitude, longitude) {
-    var api = "http://192.168.18.16/php_program/send_coords.php"
+    // var api = "http://192.168.18.16/php_program/send_coords.php"
+    var api = "https://rapidtracking.000webhostapp.com/send_coords.php"
     var headers = {
       'Accept': 'application/json',
       'Content-Type': 'application.json'
@@ -90,7 +91,7 @@ const App = () => {
 
 
   function share_location() {
-    timer = setInterval(getLocation, 6000);
+    timer = setInterval(getLocation, 5000);
     setLocationStatus("Sharing Location...")
   }
   function stop_sharing_loc() {
